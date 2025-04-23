@@ -52,6 +52,13 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     return encoded_jwt
 
 def determine_user_role(email):
+    # Verificar se é um email do IBMEC
+    if not email.lower().endswith("@ibmec.edu.br"):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Apenas emails do IBMEC são permitidos",
+        )
+    
     # Verificar se o email contém "professor"
     if "professor" in email.lower():
         return "professor"
